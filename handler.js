@@ -292,15 +292,15 @@ module.exports = handle = (client, Client) => {
 			if (global.tebakgambar[data.from] && global.tebakgambar[data.from].id) return data.reply("Masih ada soal yang berjalan")
             const getSoal = await axios.get(`${configs.apiUrl}/api/tebakgambar?apikey=${configs.zeksKey}`)
 			ses = Date.now()
-			send = await Client.sendFileFromUrl(data.from, getSoal.data.result.soal, "soal.jpg", "Waktu menjawab 30 detik!", data.message)
+			send = await Client.sendFileFromUrl(data.from, getSoal.data.result.soal, "soal.jpg", "Waktu menjawab 60 detik!", data.message)
 			global.tebakgambar[data.from] = {jawaban: getSoal.data.result.jawaban, id: ses}
-			await sleep(10000)
+			await sleep(20000)
+			if (global.tebakgambar[data.from].id != ses) return
+			Client.reply(data.from,"Waktu tersisa 40 detik", send)
+			await sleep(20000)
 			if (global.tebakgambar[data.from].id != ses) return
 			Client.reply(data.from,"Waktu tersisa 20 detik", send)
-			await sleep(10000)
-			if (global.tebakgambar[data.from].id != ses) return
-			Client.reply(data.from,"Waktu tersisa 10 detik", send)
-			await sleep(10000)
+			await sleep(20000)
 			if (global.tebakgambar[data.from].id != ses) return
 			Client.reply(data.from, "Waktu habis", send)
 			Client.reply(data.from,`Jawabannya adalah: ${getSoal.data.result.jawaban}`, send)
